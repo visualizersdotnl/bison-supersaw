@@ -20,7 +20,7 @@ This is the basic ingredient.
 
 - Performance.
 
-It performs just fine though if need be it can of course be optimized according to target hardware; we hardly use any SIMD code in FM. BISON itself, in part because we never quite reached the point where it was necessary and over time, in part, because not doing so sustains a beter degree of readability and ease of alteration.
+It performs just fine though if need be it can of course be optimized according to target hardware; we hardly use any SIMD code in FM. BISON itself, in part because we never quite reached the point where it was necessary and over time, in part, because not doing so sustains a better degree of readability and ease of alteration.
 
 Calculating the polynomial into a reasonable coarse table is not only essential for fast real-time alterations of the oscillator's paramaters, even the table's modest size and linear interpolation between values actually means the result comes a bit closer to the JP-8000, since you guessed it, those settings are controlled by 7-bit discrete controls on the instrument itself (MIDI).
 
