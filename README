@@ -1,0 +1,34 @@
+
+This is a verbatim snippet from bipolaudio.nl's otherwise (at time of writing) closed FM. BISON codebase.
+Since we've got ideas for our technology it will stay closed for the time being.
+
+
+- Why?
+
+It is intended to show how easy it actually is to implement a JP-8000 style supersaw oscillator instead of many, 
+often clinically sounding, interpretations I've heard.
+
+- What does it sound like?
+
+Finding out how it sounds is a matter of buying a JP-8000, peruse Youtube to hear one or just simply implementing this yourself. 
+
+- How to apply?
+
+It fares especially well in a patch (FM. BISON does this with ease) that has multiple of these oscillators plus some pure sines or filtered saws to thicken it all up. I could go on and sell even more of our ideas,
+but instead you be the sound designer/engineer yourself.
+
+This is the basic ingredient.
+
+- Performance.
+
+It performs just fine though if need be it can of course be optimized according to target hardware; we hardly use any SIMD code in FM. BISON itself, in part because we never quite reached the point where it was necessary and over time, in part, because not doing so sustains a beter degree of readability and ease of alteration.
+
+Calculating the polynomial into a reasonable coarse table is not only essential for fast real-time alterations of the oscillator's paramaters, even the table's modest size and linear interpolation between values actually means the result comes a bit closer to the JP-8000, since you guessed it, those settings are controlled by 7-bit discrete controls on the instrument itself (MIDI).
+
+
+
+On behalf of myself and my partner in bipolaraudio.nl: have at it!
+Please do give us and Adam Szabo a shout out in your project or product if this made you any the wiser.
+
+
+- Niels J. de Wit, 12/01/2026
