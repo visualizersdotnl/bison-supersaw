@@ -9,9 +9,8 @@
 
 namespace SFM
 {
-	// Keep this a fraction of a feasible Intel level 1 cache size (at least 64KB these days)
-	// For true JP-8000 simulation 128 does the trick, but a little extra precision won't hurt
-	constexpr unsigned kDetuneSteps = 1024;
+	// Keep MIDI precision (128 step detune control)
+	constexpr unsigned kDetuneSteps = 128;
 
 	alignas(16) static float s_detuneTab[kDetuneSteps];
 
@@ -19,12 +18,15 @@ namespace SFM
 	{
 		for (unsigned iStep = 0; iStep < kDetuneSteps; ++iStep)
 		{
-			constexpr float delta = 1.f/kDetuneSteps;
-			const float detune = (float) SampleDetuneCurve(delta*iStep); // Cast to single precision makes no audible difference, so far
+			// Cover 0-127 integer steps
+			constexpr float delta = 1.f/(kDetuneSteps-1);
+
+			const float detune = (float) SampleDetuneCurve(delta*iStep);
 			s_detuneTab[iStep] = detune;
 		}
 	}
 
+	// FIXME: summing likely causes (some) numerical instability
 	/* static */ double Supersaw::SampleDetuneCurve(double detune)
 	{
 		SFM_ASSERT_NORM(detune);
@@ -47,11 +49,9 @@ namespace SFM
 	{
 		SFM_ASSERT_NORM(detune);
 
-		const unsigned indexA = unsigned(floorf(detune * (kDetuneSteps - 1)));
-		const unsigned indexB = indexA + 1;
-		const float valA = s_detuneTab[indexA];
-		const float valB = s_detuneTab[indexB];
-		return lerpf<float>(valA, valB, fracf(detune));
+		const float fIndex = detune*(kDetuneSteps-1); // [0..127]
+		const unsigned floor = unsigned(floorf(fIndex));
+		return lerpf<float>(valA, valB, fracf(fIndex));
 	}
 
 	void Supersaw::Initialize(float frequency, unsigned sampleRate, float detune, float mix)
