@@ -4,7 +4,8 @@
 	(C) Niels J. de Wit (njdewit tech./Stockton North) & bipolaraudio.nl
 	MIT license applies, please see https://en.wikipedia.org/wiki/MIT_License or LICENSE in the project root!
 
-	- Ref.: https://pdfs.semanticscholar.org/1852/250068e864215dd7f12755cf00636868a251.pdf (copy in repository)
+	- Initial ref.: https://pdfs.semanticscholar.org/1852/250068e864215dd7f12755cf00636868a251.pdf (copy in repository)
+	- New (post impl.) ref.: https://youtu.be/XM_q5T7wTpQ ('From Silicon to Darude' presentation by The Usual Suspects)
 	- Free running: all phases are updated by Bison::Render() if the oscillator is not being used
 	
 	FIXME:
@@ -32,6 +33,16 @@ namespace SFM
 	// Centre (fundamental) moved from position 4 to 1
 	constexpr float kSupersawRelative[kNumSupersawOscillators] = 
 	{
+		// As derived by 'the usual suspects' (and given the nature of their research: the final word it)
+		// You can still opt to use the other sets of course, nothing inherently wrong with those
+		0.f, 
+		-0.10986328125f, 
+		-0.0628662109375f, 
+		-0.01953125f,
+		0.01953125f,
+		0.062255859375f, 
+		0.107421875f
+
 /*
 		// According to Adam Szabo
 		 0.f, 
@@ -43,6 +54,7 @@ namespace SFM
 		 0.10745242f
 */
 
+/*
 		// According to Alex Shore
 		0.f,
 		-0.11002313f,
@@ -51,6 +63,7 @@ namespace SFM
 		0.02953130f,
 		0.06216538f,
 		0.10745242f
+*/
 	}; 
 
 	class Supersaw
@@ -210,7 +223,7 @@ namespace SFM
 				m_pitch[iOsc] = pitch;
 			}
 
-			// Cut lower end
+			// Cut lower end (as proposed by Szabo)
 			// constexpr float Q = kNormalGainAtCutoff; // 0.707
 			// m_HPF.setBiquad(bq_type_highpass, frequency/m_sampleRate, Q, 0.f);
 		}
