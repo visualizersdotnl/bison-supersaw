@@ -8,10 +8,11 @@
 	- Free running: all phases are updated by Bison::Render() if the oscillator is not being used
 	
 	FIXME:
-		- Not in [-1..1] range, 2026: is this still the case? Never checked since BISON's render has tolerance.
+		- Not in [-1..1] range if I recall correctly, its obviously a bit like mixing voices, but FM. BISON's
+		  render has ample headroom for situations like this; I can normalize (not just flatten) if I want to
 		- Too much implementation lives in this header file?
 
-	For now I'm picking the single precision version since I can't hear the f*cking difference ;)
+	For now I'm picking the single precision version since (most of) of FM. BISON uses that
 */
 
 #pragma once
@@ -84,7 +85,7 @@ namespace SFM
 		{
 			// Initialize phases with values between [0..1] and let's hope that at least a few of them are irrational
 			for (auto &phase : m_phase)
-				phase = oscSine(0.11f + 0.1f*mt_randf()); // Irraional enough (TM)
+				phase = oscSine(0.11f + 0.1f*mt_randf()); // Irrational enough (TM)
 
 				// Generating "more" irrational values can for ex. be done by accumulation, but end of day
 				// any IEEE compliant float is rational :-)
@@ -227,7 +228,7 @@ namespace SFM
 			// JP-8000 ratios (according to Adam's thesis)
 			SFM_ASSERT_NORM(mix);
 			m_mainMix = -0.55366f*mix + 0.99785f;
-			m_sideMix = -0.73764f*powf(mix, 2.f) + 1.2841f*mix + 0.044372f;
+			m_sideMix = -0.73764f*mix*mix + 1.2841f*mix + 0.044372f;
 		}
 		
 		// See impl.
