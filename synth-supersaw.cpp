@@ -51,7 +51,7 @@ namespace SFM
 
 		const float fIndex = detune*(kDetuneSteps-1); // [0..127]
 		const unsigned floor = unsigned(floorf(fIndex));
-		return lerpf<float>(valA, valB, fracf(fIndex));
+		return lerpf<float>(s_detuneTab[floor], s_detuneTab[floor+1], fracf(fIndex));
 	}
 
 	void Supersaw::Initialize(float frequency, unsigned sampleRate, float detune, float mix)
