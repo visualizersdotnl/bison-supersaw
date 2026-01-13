@@ -5,7 +5,7 @@
 	MIT license applies, please see https://en.wikipedia.org/wiki/MIT_License or LICENSE in the project root!
 
 	- Initial ref.: https://pdfs.semanticscholar.org/1852/250068e864215dd7f12755cf00636868a251.pdf (copy in repository)
-	- New (post impl.) ref.: https://youtu.be/XM_q5T7wTpQ ('From Silicon to Darude' presentation by The Usual Suspects)
+	- New (post impl.) ref.: https://youtu.be/XM_q5T7wTpQ ('From Silicon to Darude' presentation by 'The usual suspects')
 	- Free running: all phases are updated by Bison::Render() if the oscillator is not being used
 	
 	FIXME:
@@ -13,7 +13,21 @@
 		  render has ample headroom for situations like this; I can normalize (not just flatten) if I want to
 		- Too much implementation lives in this header file?
 
-	For now I'm picking the single precision version since (most of) of FM. BISON uses that
+	For now I'm picking the single precision version since (most of) of FM. BISON uses that internally,
+	and given the final word on the real Roland implementation, well.. :-)
+
+	Discussing the Roland / 'The usual suspects' way:
+	- Changing this oscillator to more closely if not exactly reflecting the JP-8000 is possible but is not
+	  simply a matter of oversampling; it would also require more coarse fixed point arithmetic as well as 100%
+	  naive (non-bandlimited) oscillators. Anything inbetween would just sound wrong and isn't necessarily the
+	  right call for the hardware FM. BISON is intended to run on.
+	- Both implementations (the actual truth and this adaptation) offer an amount of grit because not all 
+	  artifacts are eliminated in either implementation. Another important key to this particular oscillator is
+	  the dissonanance at the top end of the detune curve; both represent it well and true to form as far as I am
+	  concerned.
+	- When all is said and done this oscillator is only as good as the DSP chain it is part of and the sound
+	  designer that makes the patch.
+	- Nonetheless, I will have a go at it once I can justify spending the time! :-)
 */
 
 #pragma once
@@ -33,7 +47,7 @@ namespace SFM
 	// Centre (fundamental) moved from position 4 to 1
 	constexpr float kSupersawRelative[kNumSupersawOscillators] = 
 	{
-		// As derived by 'the usual suspects' (and given the nature of their research: the final word it)
+		// As derived by 'the usual suspects' to test Adam Szabo's measurings (and given the nature of their research: the final word)
 		// You can still opt to use the other sets of course, nothing inherently wrong with those
 		0.f, 
 		-0.10986328125f, 
